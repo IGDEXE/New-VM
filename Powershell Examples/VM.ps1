@@ -6,7 +6,10 @@ $grupoRecursos = "MeuGrupoDeRecursos"
 $rgLocalizacao = "EastUs"
 
 # Conecta no Azure
-$azureCredential = Connect-AzAccount
+Connect-AzAccount
+
+# Credenciais da VM
+$vmCredential = Get-Credential -Message "Informe um usuario e senha para a VM."
 
 # Criar um grupo de recursos
 New-AzResourceGroup -Name $grupoRecursos -Location $rgLocalizacao
@@ -21,7 +24,7 @@ New-AzVm `
     -SecurityGroupName "MyNetworkSecurityGroup" `
     -PublicIpAddressName "MyPublicIpAddress" `
     -OpenPorts 80,3389 `
-    -Credential $azureCredential
+    -Credential $vmCredential
 
 # Conecta na VM
 $ipVM = Get-AzPublicIpAddress -ResourceGroupName $grupoRecursos | Select-Object "IpAddress"
